@@ -324,9 +324,11 @@ const Call = () => {
                             });
 
                             if (response.ok) {
-                              // Remove the lead from both lists
+                              // Remove the lead from all lists
                               setLeads(prevLeads => prevLeads.filter(l => l._id !== lead._id));
                               setFilteredLeads(prevFiltered => prevFiltered.filter(l => l._id !== lead._id));
+                              // Also remove from ready-to-call leads if it was there
+                              setReadyToCallLeads(prevReady => prevReady.filter(l => l._id !== lead._id));
                               alert('Lead deleted successfully!');
                             } else {
                               alert('Failed to delete lead');
@@ -369,6 +371,8 @@ const Call = () => {
                         onChange={(e) => {
                           // Update both states immediately for responsive UI
                           const updatedLead = { ...lead, points: e.target.value };
+                          
+                          // Update main leads state
                           setLeads(prevLeads => 
                             prevLeads.map(l => 
                               l._id === lead._id 
@@ -376,6 +380,19 @@ const Call = () => {
                                 : l
                             )
                           );
+                          
+                          // Update ready-to-call leads state if this is a ready-to-call lead
+                          if (isReadyToCall(lead)) {
+                            setReadyToCallLeads(prevReady => 
+                              prevReady.map(l => 
+                                l._id === lead._id 
+                                  ? updatedLead
+                                  : l
+                              )
+                            );
+                          }
+                          
+                          // Update filtered leads state
                           setFilteredLeads(prevFiltered => 
                             prevFiltered.map(l => 
                               l._id === lead._id 
@@ -402,12 +419,14 @@ const Call = () => {
                               alert('Failed to save points');
                               // Revert the change if save failed
                               fetchLeads();
+                              fetchReadyToCallLeads();
                             }
                           } catch (error) {
                             console.error('Error saving points:', error);
                             alert('Error saving points');
                             // Revert the change if save failed
                             fetchLeads();
+                            fetchReadyToCallLeads();
                           }
                         }}
                       />
@@ -531,6 +550,8 @@ const Call = () => {
                             const otherFiltered = prevFiltered.filter(l => l._id !== lead._id);
                             return [...otherFiltered, updatedLead];
                           });
+                          // Remove from ready-to-call leads if it was there
+                          setReadyToCallLeads(prevReady => prevReady.filter(l => l._id !== lead._id));
                           // Show success message
                           alert('Call marked as not connected and moved to end of queue!');
                         } else {
@@ -563,6 +584,16 @@ const Call = () => {
                             : { ...l, showSchedulePicker: false }
                         )
                       );
+                      // Also update ready-to-call leads if this is a ready-to-call lead
+                      if (isReadyToCall(lead)) {
+                        setReadyToCallLeads(prevReady => 
+                          prevReady.map(l => 
+                            l._id === lead._id 
+                              ? updatedLead
+                              : { ...l, showSchedulePicker: false }
+                          )
+                        );
+                      }
                     }}
                   >
                     Schedule
@@ -592,6 +623,16 @@ const Call = () => {
                                 : l
                             )
                           );
+                          // Also update ready-to-call leads if this is a ready-to-call lead
+                          if (isReadyToCall(lead)) {
+                            setReadyToCallLeads(prevReady => 
+                              prevReady.map(l => 
+                                l._id === lead._id 
+                                  ? updatedLead
+                                  : l
+                              )
+                            );
+                          }
                         }}
                       >
                         ✕
@@ -618,6 +659,16 @@ const Call = () => {
                                 : l
                             )
                           );
+                          // Also update ready-to-call leads if this is a ready-to-call lead
+                          if (isReadyToCall(lead)) {
+                            setReadyToCallLeads(prevReady => 
+                              prevReady.map(l => 
+                                l._id === lead._id 
+                                  ? updatedLead
+                                  : l
+                              )
+                            );
+                          }
                         }}
                       />
                       <div className="schedule-actions">
@@ -652,6 +703,8 @@ const Call = () => {
                                     updateFilteredLeads(newLeads);
                                     return newLeads;
                                   });
+                                  // Remove from ready-to-call leads if it was there
+                                  setReadyToCallLeads(prevReady => prevReady.filter(l => l._id !== lead._id));
                                   alert(`Call scheduled for ${new Date(scheduledAt).toLocaleString()}!`);
                                 } else {
                                   alert('Failed to schedule call');
@@ -685,6 +738,16 @@ const Call = () => {
                                   : l
                               )
                             );
+                            // Also update ready-to-call leads if this is a ready-to-call lead
+                            if (isReadyToCall(lead)) {
+                              setReadyToCallLeads(prevReady => 
+                                prevReady.map(l => 
+                                  l._id === lead._id 
+                                    ? updatedLead
+                                    : l
+                                )
+                              );
+                            }
                           }}
                         >
                           Cancel
