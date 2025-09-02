@@ -9,6 +9,7 @@ import './call.css';
 const Call = () => {
 
   const [leads, setLeads] = useState([]);
+  const [readyToCallLeads, setReadyToCallLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -39,28 +40,54 @@ const Call = () => {
     }
   }, []);
 
+  // Fetch ready-to-call leads (scheduled time has passed)
+  const fetchReadyToCallLeads = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(getApiUrl('api/leads/ready-to-call'), {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const readyToCallData = data.readyToCallLeads || [];
+        setReadyToCallLeads(readyToCallData);
+      } else {
+        console.error('Failed to fetch ready to call leads:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching ready to call leads:', error);
+    }
+  }, []);
+
   // Memoized function to update filtered leads
-  const updateFilteredLeads = useCallback((leadsData) => {
-    // First, filter out scheduled calls (they should not appear in the call queue)
-    const unscheduledLeads = leadsData.filter(lead => !lead.scheduledAt);
+  const updateFilteredLeads = useCallback((leadsData, readyToCallData = []) => {
+    // Combine regular leads and ready-to-call leads
+    const allAvailableLeads = [
+      ...leadsData.filter(lead => !lead.scheduledAt), // Regular unscheduled leads
+      ...readyToCallData // Ready-to-call leads (scheduled time has passed)
+    ];
     
     if (selectedUserFilter) {
-      // Filter unscheduled leads by selected user
-      const filtered = unscheduledLeads.filter(lead => 
+      // Filter by selected user
+      const filtered = allAvailableLeads.filter(lead => 
         lead.assignedTo && 
         (lead.assignedTo._id === selectedUserFilter || lead.assignedTo === selectedUserFilter)
       );
       setFilteredLeads(filtered);
     } else {
-      // Show all unscheduled leads (no user filtering)
-      setFilteredLeads(unscheduledLeads);
+      // Show all available leads (no user filtering)
+      setFilteredLeads(allAvailableLeads);
     }
   }, [selectedUserFilter]);
 
   // Effect to update filtered leads when filter changes
   useEffect(() => {
-    updateFilteredLeads(leads);
-  }, [selectedUserFilter, leads, updateFilteredLeads]);
+    updateFilteredLeads(leads, readyToCallLeads);
+  }, [selectedUserFilter, leads, readyToCallLeads, updateFilteredLeads]);
 
   // Fetch leads from API
   const fetchLeads = useCallback(async () => {
@@ -80,7 +107,8 @@ const Call = () => {
         const data = await response.json();
         const leadsData = data.leads || [];
         setLeads(leadsData);
-        updateFilteredLeads(leadsData);
+        // Also fetch ready-to-call leads
+        await fetchReadyToCallLeads();
       } else {
         setError('Failed to fetch leads');
         console.error('Failed to fetch leads:', response.status, response.statusText);
@@ -96,7 +124,7 @@ const Call = () => {
   useEffect(() => {
     fetchLeads();
     fetchUsers();
-  }, [fetchLeads, fetchUsers]);
+  }, [fetchLeads, fetchUsers, fetchReadyToCallLeads]);
 
 
 
@@ -115,12 +143,50 @@ const Call = () => {
     };
   }, [fetchLeads]);
 
+  // Auto-refresh ready-to-call leads every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchReadyToCallLeads();
+    }, 30000); // Check every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [fetchReadyToCallLeads]);
+
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     try {
       return new Date(dateString).toLocaleDateString();
     } catch {
       return 'N/A';
+    }
+  };
+
+  // Check if a lead is ready to call (was scheduled but time has passed)
+  const isReadyToCall = (lead) => {
+    return readyToCallLeads.some(readyLead => readyLead._id === lead._id);
+  };
+
+  // Move ready-to-call lead to regular queue
+  const moveToRegularQueue = async (leadId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(getApiUrl('api/leads/move-to-queue'), {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        // Remove from ready-to-call leads
+        setReadyToCallLeads(prev => prev.filter(l => l._id !== leadId));
+        // Refresh the data
+        await fetchReadyToCallLeads();
+        await fetchLeads();
+      }
+    } catch (error) {
+      console.error('Error moving lead to regular queue:', error);
     }
   };
 
@@ -189,7 +255,10 @@ const Call = () => {
             <div className="leads-count">
               <span className="count-text">Available Calls</span>
               <span className="count-badge">
-                {selectedUserFilter ? `${filteredLeads.length}/${leads.filter(lead => !lead.scheduledAt).length}` : leads.filter(lead => !lead.scheduledAt).length}
+                {selectedUserFilter ? 
+                  `${filteredLeads.length}/${leads.filter(lead => !lead.scheduledAt).length + readyToCallLeads.length}` : 
+                  leads.filter(lead => !lead.scheduledAt).length + readyToCallLeads.length
+                }
               </span>
             </div>
           </div>
@@ -223,10 +292,15 @@ const Call = () => {
         ) : (
           <div className="leads-grid">
             {filteredLeads.map((lead) => (
-              <div key={lead._id} className="lead-card">
+              <div key={lead._id} className={`lead-card ${isReadyToCall(lead) ? 'ready-to-call' : ''}`}>
                 <div className="lead-header">
                   <div className="lead-name">
                     {lead.name}
+                    {isReadyToCall(lead) && (
+                      <span className="ready-indicator" title="Ready to call - scheduled time has passed">
+                        🔔
+                      </span>
+                    )}
                   </div>
                   <div className="header-right">
                     <div 
@@ -391,6 +465,11 @@ const Call = () => {
                         });
 
                         if (response.ok) {
+                          // If this was a ready-to-call lead, move it to regular queue first
+                          if (isReadyToCall(lead)) {
+                            await moveToRegularQueue(lead._id);
+                          }
+                          
                           // Update the lead in both lists to show it as completed
                           const updatedLead = { 
                             ...lead, 

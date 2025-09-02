@@ -31,7 +31,16 @@ const FollowUp = () => {
       if (response.ok) {
         const data = await response.json();
         const scheduledData = data.scheduledLeads || [];
-        setScheduledLeads(scheduledData);
+        
+        // Filter out leads that are ready to call (scheduled time has passed)
+        const now = new Date();
+        const futureScheduledLeads = scheduledData.filter(lead => {
+          if (!lead.scheduledAt) return false;
+          const scheduledTime = new Date(lead.scheduledAt);
+          return scheduledTime > now; // Only show future scheduled calls
+        });
+        
+        setScheduledLeads(futureScheduledLeads);
       } else {
         setError('Failed to fetch scheduled calls');
         console.error('Failed to fetch scheduled calls:', response.status, response.statusText);
@@ -46,6 +55,15 @@ const FollowUp = () => {
 
   useEffect(() => {
     fetchScheduledCalls();
+  }, [fetchScheduledCalls]);
+
+  // Auto-refresh scheduled calls every 30 seconds to remove ready-to-call leads
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchScheduledCalls();
+    }, 30000); // Check every 30 seconds
+
+    return () => clearInterval(interval);
   }, [fetchScheduledCalls]);
 
 

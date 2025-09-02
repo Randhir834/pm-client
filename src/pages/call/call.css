@@ -394,6 +394,31 @@
   border-color: #cbd5e1;
 }
 
+.lead-card.ready-to-call {
+  border: 2px solid #f59e0b;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+}
+
+.lead-card.ready-to-call::before {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.ready-indicator {
+  margin-left: 8px;
+  font-size: 16px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 .lead-header {
   display: flex;
   justify-content: space-between;
