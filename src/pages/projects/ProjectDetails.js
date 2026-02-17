@@ -168,7 +168,7 @@ const ProjectDetails = () => {
               <table className="data-table">
                 <tbody>
                   <tr>
-                    <th style={{ width: 220 }}>Project ID</th>
+                    <th style={{ width: 'clamp(140px, 25vw, 220px)' }}>Project ID</th>
                     <td>{project.projectId || ''}</td>
                   </tr>
                   <tr>
@@ -216,7 +216,8 @@ const ProjectDetails = () => {
                               }
                             }}
                             style={{
-                              minWidth: 220,
+                              width: 'min(100%, 320px)',
+                              minWidth: 0,
                               height: 44,
                               padding: '0 12px',
                               fontSize: 16,

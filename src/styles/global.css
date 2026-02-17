@@ -64,6 +64,24 @@ body {
   background-color: var(--background-primary);
 }
 
+/* Shared responsive table styles */
+.table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+}
+
+.data-table th,
+.data-table td {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 /* Common utility classes */
 .loading-container {
   display: flex;

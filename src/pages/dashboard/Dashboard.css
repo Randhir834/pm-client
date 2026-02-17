@@ -76,7 +76,8 @@
   flex-direction: column;
   gap: var(--spacing-md);
   margin-right: var(--spacing-lg);
-  min-width: 380px;
+  min-width: 0;
+  width: min(380px, 100%);
   align-self: flex-start;
 }
 

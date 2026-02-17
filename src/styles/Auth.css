@@ -2,7 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap');
 
 /* CSS Variables for consistent theming */
-:root {
+ .auth-container,
+ .login-container {
   --primary-color: #2c3e50;
   --secondary-color: #34495e;
   --accent-color: #3498db;
@@ -34,20 +35,13 @@
   box-sizing: border-box;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-}
-
-body {
+ .auth-container,
+ .login-container {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #000; /* Fallback color */
-}
+  overflow-x: hidden;
+ }
 
 /* Back button container */
 .back-button-container {
@@ -944,27 +938,7 @@ body {
 }
 
 /* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text-primary: #ecf0f1;
-    --text-secondary: #bdc3c7;
-    --text-light: #7f8c8d;
-    --background-primary: #2c3e50;
-    --background-secondary: #34495e;
-    --border-color: #34495e;
-    --border-focus: #3498db;
-  }
-  
-  .auth-card {
-    background: rgba(44, 62, 80, 0.95);
-    border: 1px solid rgba(52, 73, 94, 0.3);
-  }
-  
-  .form-group input {
-    background: var(--background-secondary);
-    color: var(--text-primary);
-  }
-}
+
 
 /* Role Selection Styles */
 .form-group select {
@@ -1021,7 +995,7 @@ body {
 /* Two-column login layout */
 .login-two-column-container {
   display: flex;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   height: auto;
   overflow: visible;
@@ -1200,7 +1174,7 @@ body {
     min-height: 100vh;
   }
   .login-left, .login-right {
-    width: 100vw;
+    width: 100%;
     min-width: 0;
     min-height: 300px;
     height: auto;
@@ -1320,7 +1294,7 @@ body {
 /* New Login Container Layout */
 .login-container {
   display: flex;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   overflow: hidden;
   background-size: cover;
@@ -1330,7 +1304,7 @@ body {
   position: relative;
   background-color: #000; /* Fallback color */
   min-height: 100vh;
-  min-width: 100vw;
+  min-width: 0;
 }
 
 /* Left Side - Empty Space */

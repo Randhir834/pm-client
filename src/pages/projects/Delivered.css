@@ -1,8 +1,15 @@
 .delivered-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
   padding: 20px 0;
+}
+
+@media (max-width: 1024px) {
+  .delivered-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
 }
 
 /* ===== Enhanced Filter Section ===== */
