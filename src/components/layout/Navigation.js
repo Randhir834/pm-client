@@ -1,14 +1,49 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { prefetchCachedApi } from '../../hooks/useCachedApi';
 import '../../styles/global.css';
 import './Navigation.css';
 // Logo is in public directory, so we can reference it directly
+
+const preloaders = {
+  dashboard: () => import('../../pages/dashboard/DashboardProjects'),
+  admin: () => import('../../pages/dashboard/AdminDashboard'),
+  projects: () => import('../../pages/projects/Projects'),
+  delivered: () => import('../../pages/projects/Delivered')
+};
+
+const apiPrefetchers = {
+  dashboard: () => prefetchCachedApi('api/projects'),
+  projects: () => prefetchCachedApi('api/projects'),
+  delivered: () => prefetchCachedApi('api/projects/delivered'),
+  admin: async () => {
+    await prefetchCachedApi('api/auth/stats');
+    await prefetchCachedApi('api/auth/users');
+  }
+};
 
 const Navigation = () => {
   const { user, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const preloadRoute = (key) => {
+    const fn = preloaders[key];
+    if (!fn) return;
+    // Fire-and-forget; errors are non-fatal for UX.
+    Promise.resolve()
+      .then(fn)
+      .catch(() => {});
+  };
+
+  const preloadData = (key) => {
+    const fn = apiPrefetchers[key];
+    if (!fn) return;
+    Promise.resolve()
+      .then(fn)
+      .catch(() => {});
+  };
 
   const handleLogout = () => {
     logout();
@@ -20,7 +55,7 @@ const Navigation = () => {
 
   // Function to get the dynamic title based on current route
   const getPageTitle = () => {
-    return 'Innovatiq Media CRM';
+    return 'Innovatiq Media';
   };
 
   return (
@@ -28,7 +63,7 @@ const Navigation = () => {
       <div className="nav-left">
                   <div className="nav-brand">
             <div className="animated-logo">
-              <img src={require('../../assets/logo.png')} alt="Innovatiq Media CRM" className="logo-image" />
+              <img src={require('../../assets/logo.png')} alt="Innovatiq Media" className="logo-image" />
               <div className="logo-glow"></div>
             </div>
             <h1>{getPageTitle().replace(/^[^\w]*/,'')}</h1>
@@ -37,49 +72,47 @@ const Navigation = () => {
       
       <div className="nav-center">
         <div className="nav-menu">
+          <button 
+            className={`nav-item ${isActive('/dashboard') ? 'active' : ''}`}
+            onClick={() => navigate('/dashboard')}
+            onMouseEnter={() => preloadRoute('dashboard')}
+            onFocus={() => preloadRoute('dashboard')}
+            onMouseEnterCapture={() => preloadData('dashboard')}
+            onFocusCapture={() => preloadData('dashboard')}
+          >
+            Dashboard
+          </button>
           {isAdmin && (
             <button 
               className={`nav-item ${isActive('/admin') ? 'active' : ''}`}
               onClick={() => navigate('/admin')}
+              onMouseEnter={() => preloadRoute('admin')}
+              onFocus={() => preloadRoute('admin')}
+              onMouseEnterCapture={() => preloadData('admin')}
+              onFocusCapture={() => preloadData('admin')}
             >
               Admin
             </button>
           )}
           <button 
-            className={`nav-item ${isActive('/dashboard') ? 'active' : ''}`}
-            onClick={() => navigate('/dashboard')}
+            className={`nav-item ${isActive('/projects') ? 'active' : ''}`}
+            onClick={() => navigate('/projects')}
+            onMouseEnter={() => preloadRoute('projects')}
+            onFocus={() => preloadRoute('projects')}
+            onMouseEnterCapture={() => preloadData('projects')}
+            onFocusCapture={() => preloadData('projects')}
           >
-            Dashboard
+            Projects
           </button>
-          <button 
-            className={`nav-item ${isActive('/leads') ? 'active' : ''}`}
-            onClick={() => navigate('/leads')}
+          <button
+            className={`nav-item ${isActive('/delivered') ? 'active' : ''}`}
+            onClick={() => navigate('/delivered')}
+            onMouseEnter={() => preloadRoute('delivered')}
+            onFocus={() => preloadRoute('delivered')}
+            onMouseEnterCapture={() => preloadData('delivered')}
+            onFocusCapture={() => preloadData('delivered')}
           >
-            Leads
-          </button>
-          <button 
-            className={`nav-item ${isActive('/call') ? 'active' : ''}`}
-            onClick={() => navigate('/call')}
-          >
-            Call
-          </button>
-          <button 
-            className={`nav-item ${isActive('/call-done') ? 'active' : ''}`}
-            onClick={() => navigate('/call-done')}
-          >
-            Hot Lead
-          </button>
-          <button 
-            className={`nav-item ${isActive('/call-not-done') ? 'active' : ''}`}
-            onClick={() => navigate('/call-not-done')}
-          >
-            Call Not Done
-          </button>
-          <button 
-            className={`nav-item ${isActive('/follow-up') ? 'active' : ''}`}
-            onClick={() => navigate('/follow-up')}
-          >
-            Follow Up
+            Delivered
           </button>
         </div>
       </div>

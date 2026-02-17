@@ -391,6 +391,7 @@
   transition: all 0.3s ease;
   letter-spacing: -0.025em;
   line-height: 1.1;
+  white-space: nowrap;
 }
 
 .stat-card:hover .stat-content h3 {
@@ -408,6 +409,10 @@
 
 .stat-card:hover .stat-content p {
   color: #374151;
+}
+
+.stat-change {
+  white-space: nowrap;
 }
 
 /* Section Title */

@@ -2,107 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/layout/Layout';
 import { LoadingSpinner } from '../../components/ui';
+import { useCachedApi } from '../../hooks/useCachedApi';
 import { getApiUrl } from '../../services/api';
 import '../../styles/global.css';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [stats, setStats] = useState({
-    totalUsers: 0,
-    activeUsers: 0,
-    totalLeads: 0
-  });
-
-  const [onlineUsers, setOnlineUsers] = useState(0);
-
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const statsResult = useCachedApi('api/auth/stats', { ttlMs: 5 * 60_000 });
+  const usersResult = useCachedApi('api/auth/users', { ttlMs: 5 * 60_000 });
+
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    activeUsers: 0
+  });
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetchAdminData();
-  }, []);
+    if (statsResult.data?.stats) {
+      setStats(statsResult.data.stats);
+    }
+  }, [statsResult.data]);
 
-  // Auto-refresh data every 5 minutes
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchAdminData();
-    }, 5 * 60 * 1000); // 5 minutes
+    if (Array.isArray(usersResult.data?.users)) {
+      setUsers(usersResult.data.users);
+    }
+  }, [usersResult.data]);
 
-    return () => clearInterval(interval);
-  }, []);
+  const loading = statsResult.loading || usersResult.loading;
+
+
+  useEffect(() => {
+    const firstError = statsResult.error || usersResult.error;
+    if (!firstError) {
+      setError(null);
+      return;
+    }
+
+    const message = firstError?.message || 'Failed to load admin data. Please try again.';
+    setError(message);
+  }, [statsResult.error, usersResult.error]);
 
   const fetchAdminData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const token = localStorage.getItem('token');
-      
-      // Fetch system stats
-      const statsResponse = await fetch(getApiUrl('api/auth/stats'), {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (statsResponse.ok) {
-        const statsData = await statsResponse.json();
-        setStats(statsData.stats || {
-          totalUsers: 0,
-          activeUsers: 0,
-          totalLeads: 0
-        });
-      } else {
-        console.error('Failed to fetch stats:', statsResponse.status);
-      }
-
-
-
-
-
-      // Fetch all users with session data
-      const usersResponse = await fetch(getApiUrl('api/sessions/all'), {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (usersResponse.ok) {
-        const usersData = await usersResponse.json();
-        const users = usersData.users || [];
-        
-        // Calculate actual online users count
-        const onlineCount = users.filter(user => user.sessions?.current).length;
-        setOnlineUsers(onlineCount);
-        
-        setUsers(users);
-      } else {
-        console.error('Failed to fetch users with sessions:', usersResponse.status);
-      }
-    } catch (error) {
-      console.error('Error fetching admin data:', error);
-      setError('Failed to load admin data. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    setError(null);
+    await Promise.all([statsResult.refetch(), usersResult.refetch()]);
   };
 
 
-
-  const formatDate = (dateString) => {
-    if (!dateString) return 'Never';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
 
   const updateUserRole = async (userId, newRole) => {
     try {
@@ -164,12 +113,6 @@ const AdminDashboard = () => {
           totalUsers: prevStats.totalUsers - 1
         }));
         
-        // Update online users count if the deleted user was online
-        const deletedUser = users.find(user => user._id === userId);
-        if (deletedUser?.sessions?.current) {
-          setOnlineUsers(prev => prev - 1);
-        }
-        
         console.log(`Successfully deleted user: ${userName}`);
         alert(`User "${userName}" has been permanently deleted.`);
       } else {
@@ -184,65 +127,6 @@ const AdminDashboard = () => {
   };
 
 
-
-  const formatDuration = (milliseconds) => {
-    if (!milliseconds || milliseconds === 0) return '0m';
-    
-    const seconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    
-    if (days > 0) {
-      return `${days}d ${hours % 24}h ${minutes % 60}m`;
-    } else if (hours > 0) {
-      return `${hours}h ${minutes % 60}m`;
-    } else if (minutes > 0) {
-      return `${minutes}m`;
-    } else {
-      return `${seconds}s`;
-    }
-  };
-
-  const getSessionStatus = (user) => {
-    if (user.sessions?.current) {
-      return (
-        <span className="status-badge online">
-          <span className="status-dot"></span>
-          Online
-        </span>
-      );
-    } else if (user.sessions?.lastCompleted) {
-      return (
-        <span className="status-badge offline">
-          <span className="status-dot"></span>
-          Offline
-        </span>
-      );
-    } else {
-      return (
-        <span className="status-badge never-logged">
-          <span className="status-dot"></span>
-          Never Logged In
-        </span>
-      );
-    }
-  };
-
-  const getLastActivity = (user) => {
-    if (user.sessions?.current) {
-      return formatDate(user.sessions.current.loginTime);
-    } else if (user.sessions?.lastCompleted) {
-      return formatDate(user.sessions.lastCompleted.logoutTime);
-    } else {
-      return 'Never';
-    }
-  };
-
-  const getDailyUsage = (user) => {
-    const dailyTime = user.sessions?.totalSessionTime || 0;
-    return formatDuration(dailyTime);
-  };
 
   if (loading) {
     return (
@@ -279,7 +163,7 @@ const AdminDashboard = () => {
         <div className="dashboard-header">
           <div className="welcome-section">
             <h2>Admin Dashboard</h2>
-            <p>System overview and user management for Innovatiq Media CRM</p>
+            <p>System overview and user management for Innovatiq Media</p>
           </div>
         </div>
 
@@ -306,21 +190,8 @@ const AdminDashboard = () => {
             </div>
             <div className="stat-content">
               <h3>Active Users</h3>
-              <p className="stat-number">{onlineUsers}</p>
+              <p className="stat-number">{stats.activeUsers}</p>
               <span className="stat-change positive">Currently online</span>
-            </div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-icon" style={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}>
-              <svg viewBox="0 0 24 24" fill="white">
-                <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
-              </svg>
-            </div>
-            <div className="stat-content">
-              <h3>Total Leads</h3>
-              <p className="stat-number">{stats.totalLeads}</p>
-              <span className="stat-change positive">Leads in pipeline</span>
             </div>
           </div>
         </div>
@@ -332,7 +203,7 @@ const AdminDashboard = () => {
           <div className="section-header">
             <div className="section-title">
               <h3>User Management</h3>
-              <p>Manage user roles and permissions • {users.length} total users</p>
+              <p>Manage user roles and permissions</p>
             </div>
             <div className="section-actions">
               <button 
@@ -354,11 +225,7 @@ const AdminDashboard = () => {
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>First Login Time</th>
-                    <th>Last Activity</th>
-                    <th>Daily Usage</th>
                     <th>Role</th>
-                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -374,31 +241,6 @@ const AdminDashboard = () => {
                         </div>
                       </td>
                       <td>{user.email}</td>
-                      <td>
-                        <div className="activity-info">
-                          <div className="activity-time">{formatDate(user.firstLoginTime)}</div>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="activity-info">
-                          <div className="activity-time">{getLastActivity(user)}</div>
-                          {user.sessions?.current && (
-                            <div className="current-session">
-                              <small>Current session: {formatDuration(Date.now() - new Date(user.sessions.current.loginTime).getTime())}</small>
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                      <td>
-                        <div className="usage-info">
-                          <div className="daily-usage">{getDailyUsage(user)}</div>
-                          {user.sessions?.lastCompleted && (
-                            <div className="last-session">
-                              <small>Last: {formatDuration(user.sessions.lastCompleted.duration)}</small>
-                            </div>
-                          )}
-                        </div>
-                      </td>
                       <td>
                         <div className="role-actions">
                           <span className={`assigned-badge ${user.role === 'admin' ? 'admin' : 'user'}`}>
@@ -417,11 +259,6 @@ const AdminDashboard = () => {
                             </button>
                           )}
                         </div>
-                      </td>
-                      <td>
-                        <span className={`uploaded-by-badge ${getSessionStatus(user).props.className.includes('online') ? 'online' : 'offline'}`}>
-                          {getSessionStatus(user).props.children[1]}
-                        </span>
                       </td>
                       <td>
                         <div className="user-actions">

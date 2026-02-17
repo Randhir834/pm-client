@@ -16,22 +16,10 @@ const Dashboard = () => {
 
   const [recentActivity, setRecentActivity] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [sessionInfo, setSessionInfo] = useState({
-    loginTime: null,
-    currentDuration: 0,
-    totalSessionTime: 0,
-    last24HoursUsage: 0,
-    lastLogoutTime: null,
-    lastUpdated: null
-  });
-  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     // Fetch dashboard data
     fetchDashboardData();
-
-    // Fetch session information
-    fetchSessionInfo();
     
     // Request notification permissions
     requestNotificationPermission();
@@ -49,28 +37,6 @@ const Dashboard = () => {
       setRecentActivity(prevActivities => 
         prevActivities.filter(activity => !activity.leadId || activity.leadId !== event.detail.leadId)
       );
-    };
-    
-    // Listen for leads imported events from other components
-    const handleLeadsImported = (event) => {
-      // Update stats by increasing total and active leads count
-      setStats(prevStats => ({
-        ...prevStats,
-        totalLeads: prevStats.totalLeads + event.detail.count,
-        activeLeads: prevStats.activeLeads + event.detail.count
-      }));
-      
-      // Add import activity to recent activity
-      const importActivity = {
-        id: `import_${Date.now()}`,
-        type: 'lead_added',
-        message: `${event.detail.count} leads imported`,
-        time: new Date(),
-        details: `Bulk import completed successfully`,
-        status: 'active'
-      };
-      
-      setRecentActivity(prevActivities => [importActivity, ...prevActivities.slice(0, 9)]);
     };
     
     // Listen for lead status update events from other components
@@ -148,7 +114,6 @@ const Dashboard = () => {
     };
     
     window.addEventListener('leadDeleted', handleLeadDeleted);
-    window.addEventListener('leadsImported', handleLeadsImported);
     window.addEventListener('leadStatusUpdated', handleLeadStatusUpdated);
     window.addEventListener('callCompleted', handleCallCompleted);
     window.addEventListener('followUpScheduled', handleFollowUpScheduled);
@@ -157,7 +122,6 @@ const Dashboard = () => {
     
     return () => {
       window.removeEventListener('leadDeleted', handleLeadDeleted);
-      window.removeEventListener('leadsImported', handleLeadsImported);
       window.removeEventListener('leadStatusUpdated', handleLeadStatusUpdated);
       window.removeEventListener('callCompleted', handleCallCompleted);
       window.removeEventListener('followUpScheduled', handleFollowUpScheduled);
@@ -321,7 +285,7 @@ const Dashboard = () => {
             {
               id: 'welcome_1',
               type: 'system_update',
-              message: 'Welcome to Innovatiq Media CRM!',
+              message: 'Welcome to Innovatiq Media!',
               time: new Date(),
               details: 'Start by adding leads to your pipeline',
               status: 'active'
@@ -366,124 +330,14 @@ const Dashboard = () => {
 
   // Set up periodic refresh of session info and dashboard data
   useEffect(() => {
-    const sessionInterval = setInterval(() => {
-      fetchSessionUpdates();
-    }, 10000); // Refresh every 10 seconds for real-time updates
-
     const dashboardInterval = setInterval(() => {
       fetchDashboardData();
     }, 30000); // Refresh dashboard data every 30 seconds
 
     return () => {
-      clearInterval(sessionInterval);
       clearInterval(dashboardInterval);
     };
   }, []);
-
-  // Fetch session information
-  const fetchSessionInfo = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (token) {
-    
-        
-
-        
-        const response = await axios.get(getApiUrl('api/sessions/stats'), {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        
-        if (response.data.success) {
-          const { currentSession, totalSessionTime, last24HoursUsage, lastLogoutTime } = response.data.stats;
-          
-
-          
-          setSessionInfo({
-            loginTime: currentSession ? new Date(currentSession.loginTime) : null,
-            currentDuration: currentSession ? currentSession.duration : 0,
-            totalSessionTime: totalSessionTime || 0,
-            last24HoursUsage: last24HoursUsage || 0,
-            lastLogoutTime: lastLogoutTime ? new Date(lastLogoutTime) : null,
-            lastUpdated: new Date()
-          });
-        }
-      } else {
-
-        // Fallback: use localStorage login time if no session data
-        const loginTime = localStorage.getItem('loginTime');
-        if (loginTime) {
-          const loginDate = new Date(loginTime);
-          const currentDuration = Date.now() - loginDate.getTime();
-          setSessionInfo({
-            loginTime: loginDate,
-            currentDuration: currentDuration,
-            totalSessionTime: 0,
-            last24HoursUsage: 0,
-            lastLogoutTime: null,
-            lastUpdated: new Date()
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching session info:', error);
-      // Fallback: use localStorage login time if API fails
-      const loginTime = localStorage.getItem('loginTime');
-      if (loginTime) {
-        const loginDate = new Date(loginTime);
-        const currentDuration = Date.now() - loginDate.getTime();
-        setSessionInfo({
-          loginTime: loginDate,
-          currentDuration: currentDuration,
-          totalSessionTime: 0,
-          last24HoursUsage: 0,
-          lastLogoutTime: null,
-          lastUpdated: new Date()
-        });
-      }
-    }
-  };
-
-  // Fetch real-time session updates
-  const fetchSessionUpdates = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const response = await axios.get(getApiUrl('api/sessions/updates'), {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        
-        if (response.data.success) {
-          const { currentSession, lastLogoutTime, last24HoursUsage } = response.data.updates;
-          
-
-          
-          setSessionInfo(prev => {
-            const newLastLogoutTime = lastLogoutTime ? new Date(lastLogoutTime) : prev.lastLogoutTime;
-            
-            // Check if last logout time changed
-            if (prev.lastLogoutTime && newLastLogoutTime && 
-                prev.lastLogoutTime.getTime() !== newLastLogoutTime.getTime()) {
-
-              setShowNotification(true);
-              // Hide notification after 5 seconds
-              setTimeout(() => setShowNotification(false), 5000);
-            }
-            
-            return {
-              ...prev,
-              loginTime: currentSession ? new Date(currentSession.loginTime) : prev.loginTime,
-              currentDuration: currentSession ? currentSession.duration : prev.currentDuration,
-              last24HoursUsage: last24HoursUsage || prev.last24HoursUsage,
-              lastLogoutTime: newLastLogoutTime,
-              lastUpdated: new Date()
-            };
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching session updates:', error);
-    }
-  };
 
   // Request notification permission
   const requestNotificationPermission = async () => {
@@ -500,20 +354,6 @@ const Dashboard = () => {
   };
 
 
-
-  // Update current session duration every second
-  useEffect(() => {
-    if (sessionInfo.loginTime) {
-      const interval = setInterval(() => {
-        setSessionInfo(prev => ({
-          ...prev,
-          currentDuration: Date.now() - prev.loginTime.getTime()
-        }));
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [sessionInfo.loginTime]);
 
   // Format duration helper function
   const formatDuration = (milliseconds) => {
@@ -532,17 +372,6 @@ const Dashboard = () => {
     } else {
       return `${seconds}s`;
     }
-  };
-
-  // Format time helper function
-  const formatTime = (date) => {
-    if (!date) return 'N/A';
-    return new Date(date).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: true
-    });
   };
 
   // Format relative time helper function
@@ -660,71 +489,11 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="dashboard-container">
-        {/* Notification for logout time update */}
-        {showNotification && (
-          <div style={{
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            backgroundColor: '#d4edda',
-            color: '#155724',
-            padding: '12px 20px',
-            borderRadius: '6px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-            zIndex: 1000,
-            border: '1px solid #c3e6cb',
-            animation: 'slideIn 0.3s ease'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <span>Last logout time updated!</span>
-            </div>
-          </div>
-        )}
         {/* Welcome Section */}
         <div className="dashboard-header">
           <div className="welcome-section">
             <h2>Welcome back, {user && user.name}! 👋</h2>
             <p>Here's what's happening with your Innovatiq Media business today.</p>
-          </div>
-
-          {/* Actions Box */}
-          <div className="header-actions-box">
-            <div className="actions-card">
-              <div className="actions-content">
-                <div className="action-item">
-                  <div className="action-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                  </div>
-                  <div className="action-details">
-                    <span className="action-label">Login Time</span>
-                    <span className="action-value">
-                      {sessionInfo.loginTime ? formatTime(sessionInfo.loginTime) : 'Loading...'}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="action-item">
-                  <div className="action-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                  </div>
-                  <div className="action-details">
-                    <span className="action-label">Current Duration</span>
-                    <span className="action-value">
-                      {sessionInfo.loginTime ? formatDuration(sessionInfo.currentDuration) : '0m 0s'}
-                    </span>
-                  </div>
-                </div>
-                
-
-              </div>
-            </div>
           </div>
         </div>
 
