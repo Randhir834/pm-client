@@ -189,7 +189,7 @@ const DashboardProjects = () => {
               </svg>
             </div>
             <div className="stat-content">
-              <h3>Due This Week</h3>
+              <h3>This Week</h3>
               <p className="stat-number">{metrics.dueSoonProjects}</p>
               <span className="stat-change positive">Deadline in 7 days</span>
             </div>
