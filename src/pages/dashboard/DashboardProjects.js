@@ -107,7 +107,7 @@ const DashboardProjects = () => {
               </svg>
             </div>
             <div className="stat-content">
-              <h3>Total Projects</h3>
+              <h3>Total</h3>
               <p className="stat-number">{metrics.totalProjects}</p>
               <span className="stat-change positive">All projects visible to you</span>
             </div>
@@ -120,7 +120,7 @@ const DashboardProjects = () => {
               </svg>
             </div>
             <div className="stat-content">
-              <h3>Active Projects</h3>
+              <h3>Active</h3>
               <p className="stat-number">{metrics.activeProjects}</p>
               <span className="stat-change positive">Currently in progress</span>
             </div>
@@ -133,7 +133,7 @@ const DashboardProjects = () => {
               </svg>
             </div>
             <div className="stat-content">
-              <h3>Closed Projects</h3>
+              <h3>Closed</h3>
               <p className="stat-number">{metrics.closedProjects}</p>
               <span className="stat-change positive">Delivered</span>
             </div>
@@ -147,7 +147,7 @@ const DashboardProjects = () => {
                 </svg>
               </div>
               <div className="stat-content">
-                <h3>Total Revenue</h3>
+                <h3>Revenue</h3>
                 <p className="stat-number">{formatMoney(metrics.totalRevenue)}</p>
                 <span className="stat-change positive">Sum of project values</span>
               </div>
@@ -176,7 +176,7 @@ const DashboardProjects = () => {
               </svg>
             </div>
             <div className="stat-content">
-              <h3>Overdue Projects</h3>
+              <h3>Overdue</h3>
               <p className="stat-number">{metrics.overdueProjects}</p>
               <span className="stat-change positive">Past deadline</span>
             </div>
