@@ -34,13 +34,13 @@ button {
 }
 
 /* Reset input styles */
-input {
+input, textarea, select {
   font-family: inherit;
 }
 
 /* Focus styles for accessibility */
 *:focus {
-  outline: 2px solid #667eea;
+  outline: 2px solid #8b5cf6;
   outline-offset: 2px;
 }
 
@@ -88,6 +88,10 @@ html {
 }
 
 @media (max-width: 768px) {
+  body {
+    font-size: 100%;
+  }
+
   .page-wrapper {
     padding: var(--page-margin-mobile);
   }
@@ -98,5 +102,17 @@ html {
   
   .card-wrapper {
     margin-bottom: var(--card-margin-mobile);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 98%;
+  }
+}
+
+@media (max-width: 375px) {
+  body {
+    font-size: 95%;
   }
 }

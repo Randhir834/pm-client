@@ -428,7 +428,7 @@
   }
   
   .nav-brand h1 {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   
   .logo-image {
@@ -443,7 +443,7 @@
   
   .nav-item {
     padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     min-width: max-content;
   }
   
@@ -459,11 +459,11 @@
   }
   
   .user-name {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   
   .user-role {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
   
   .logout-button {
@@ -474,5 +474,41 @@
   .logout-button svg {
     width: 16px;
     height: 16px;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 375px) */
+@media (max-width: 375px) {
+  .app-navigation {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .nav-brand h1 {
+    font-size: 0.9rem;
+  }
+  
+  .logo-image {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .nav-item {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+  
+  .user-info {
+    display: none;
+  }
+  
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+  
+  .logout-button {
+    width: 24px;
+    height: 24px;
   }
 }

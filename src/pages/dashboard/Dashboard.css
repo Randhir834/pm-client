@@ -657,8 +657,8 @@
 }
 
 .status-qualified {
-  background: rgba(16, 185, 129, 0.1);
-  color: #047857;
+  background: rgba(139, 92, 246, 0.1);
+  color: #7c3aed;
 }
 
 .status-negotiation {
@@ -678,7 +678,7 @@
 
 .status-completed {
   background: rgba(16, 185, 129, 0.1);
-  color: #047857;
+  color: #059669;
 }
 
 .status-scheduled {
@@ -891,6 +891,7 @@
 
   .info-card {
     padding: 0.5rem;
+    min-height: 70px;
   }
 
   .info-icon {
@@ -912,22 +913,28 @@
   }
   
   .welcome-section h2 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+
+  .welcome-section p {
+    font-size: 0.9rem;
   }
   
   .stats-grid {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
     margin-left: 0;
     margin-right: 0;
   }
   
   .stat-card {
-    padding: 1rem;
+    padding: 0.75rem;
   }
 
   .stat-icon {
     width: 36px;
     height: 36px;
+    margin-bottom: 0.5rem;
   }
 
   .stat-icon svg {
@@ -939,12 +946,71 @@
     font-size: 1.25rem;
   }
 
+  .stat-content p {
+    font-size: 0.75rem;
+  }
+
   .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
     margin-left: 0;
     margin-right: 0;
   }
 
+  .dashboard-card {
+    padding: var(--spacing-md);
+  }
+
+  .card-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .activity-item {
+    padding: var(--spacing-sm);
+  }
+
+  .activity-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .activity-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .activity-message {
+    font-size: 0.85rem;
+  }
+
+  .activity-details {
+    font-size: 0.75rem;
+  }
+
   .section-title {
     margin-left: 0;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 375px) */
+@media (max-width: 375px) {
+  .welcome-section h2 {
+    font-size: 1.3rem;
+  }
+
+  .welcome-section p {
+    font-size: 0.85rem;
+  }
+
+  .stat-card {
+    padding: 0.6rem;
+  }
+
+  .stat-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .dashboard-card {
+    padding: var(--spacing-sm);
   }
 }

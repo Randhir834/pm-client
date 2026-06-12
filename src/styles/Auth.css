@@ -4,27 +4,27 @@
 /* CSS Variables for consistent theming */
  .auth-container,
  .login-container {
-  --primary-color: #2c3e50;
-  --secondary-color: #34495e;
-  --accent-color: #3498db;
-  --accent-hover: #2980b9;
-  --success-color: #27ae60;
-  --error-color: #e74c3c;
-  --warning-color: #f39c12;
-  --text-primary: #2c3e50;
-  --text-secondary: #7f8c8d;
-  --text-light: #bdc3c7;
+  --primary-color: #8b5cf6;
+  --secondary-color: #a855f7;
+  --accent-color: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-light: #9ca3af;
   --background-primary: #ffffff;
-  --background-secondary: #f8f9fa;
-  --border-color: #e9ecef;
-  --border-focus: #3498db;
+  --background-secondary: #f8fafc;
+  --border-color: #e5e7eb;
+  --border-focus: #8b5cf6;
   --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.08);
   --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.12);
   --shadow-heavy: 0 8px 40px rgba(0, 0, 0, 0.16);
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --gradient-elegant: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  --gradient-aurora: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+  --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  --gradient-secondary: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+  --gradient-elegant: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #c084fc 100%);
+  --gradient-aurora: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc, #e879f9, #7c3aed, #9333ea);
   --border-radius: 12px;
   --border-radius-small: 8px;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -529,13 +529,13 @@
 
 .form-group input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
 }
 
 .form-group input.error {
   border-color: var(--error-color);
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 .form-group input.shake {
@@ -715,7 +715,7 @@
 .spinner {
   width: 36px;
   height: 36px;
-  border: 4px solid #3498db;
+  border: 4px solid #8b5cf6;
   border-top: 4px solid #fff;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -784,7 +784,7 @@
 
 /* Success message styling */
 .success-message {
-  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
   color: white;
   padding: 16px 20px;
   border-radius: var(--border-radius-small);
@@ -954,8 +954,8 @@
 
 .form-group select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
 .form-group select.error {
@@ -974,7 +974,7 @@
   padding: 12px;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.1);
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #8b5cf6;
   margin: 0;
   backdrop-filter: blur(10px);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
@@ -1183,6 +1183,17 @@
     min-height: 200px;
     padding: 24px 0;
   }
+  
+  .login-left {
+    padding: 0 12px;
+    max-height: none;
+    overflow-y: visible;
+  }
+  
+  .login-left-center {
+    height: auto;
+    padding: 20px 0;
+  }
 }
 
 /* Enhanced mobile responsiveness for login container */
@@ -1239,6 +1250,12 @@
   .welcome-text {
     font-size: 18px;
   }
+
+  .registration-form-container {
+    padding: 20px;
+    max-height: none;
+    overflow-y: visible;
+  }
 }
 
 /* Additional mobile optimizations for very small screens */
@@ -1289,6 +1306,141 @@
     font-size: 16px;
     min-height: 44px;
   }
+  
+  .registration-form-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 8px;
+  }
+  
+  .login-left-side {
+    height: 25vh;
+    min-height: 160px;
+  }
+  
+  .login-right-side {
+    height: 75vh;
+    min-height: 360px;
+    padding: 12px;
+    padding-top: 24px;
+  }
+
+  .brand-name-text {
+    font-size: 20px;
+  }
+  
+  .brand-subtitle {
+    font-size: 16px;
+  }
+  
+  .welcome-text {
+    font-size: 14px;
+  }
+
+  .form-group {
+    margin-bottom: 14px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 10px 14px;
+    font-size: 16px;
+  }
+
+  .auth-button {
+    padding: 10px 16px;
+    font-size: 15px;
+    min-height: 42px;
+  }
+
+  .password-toggle {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .error-message {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .password-help {
+    padding: 8px 10px;
+  }
+
+  .password-help p {
+    font-size: 12px;
+  }
+
+  .password-help li {
+    font-size: 11px;
+  }
+
+  .auth-footer p {
+    font-size: 13px;
+  }
+
+  .registration-form-container {
+    padding: 12px;
+    margin-top: 0;
+  }
+
+  .login-form-container {
+    margin-top: 80px;
+  }
+}
+
+@media (max-width: 375px) {
+  .brand-name-text {
+    font-size: 18px;
+  }
+  
+  .brand-subtitle {
+    font-size: 14px;
+  }
+  
+  .welcome-text {
+    font-size: 13px;
+  }
+
+  .brand-lightbulb {
+    font-size: 24px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 9px 12px;
+  }
+
+  .auth-button {
+    padding: 9px 14px;
+    font-size: 14px;
+    min-height: 40px;
+  }
+
+  .logo-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .login-form-container {
+    margin-top: 60px;
+  }
 }
  
 /* New Login Container Layout */
@@ -1300,17 +1452,20 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #000; /* Fallback color */
   min-height: 100vh;
-  min-width: 0;
+  min-width: 100vw;
 }
 
 /* Left Side - Empty Space */
 .login-left-side {
   width: 60%;
-  height: 100vh;
+  height: 100%;
   position: relative;
   display: flex;
   align-items: center;
@@ -1320,13 +1475,14 @@
 /* Right Side - Login Form Overlay */
 .login-right-side {
   width: 40%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
   position: relative;
   z-index: 10;
+  overflow-y: auto;
 }
 
 .login-form-overlay {
@@ -1492,7 +1648,7 @@
 
 /* Enhanced Button Styling */
 .auth-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
   color: white;
   border: none;
   padding: 16px 24px;
@@ -1567,15 +1723,15 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 1);
 }
 
 .form-group input.error {
-  border-color: #e74c3c;
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1), 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1), 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .form-group input.shake {
