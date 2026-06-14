@@ -1,0 +1,178 @@
+/* ==========================================
+   UNIVERSAL PAGE LAYOUT STYLES
+   Consistent spacing for all pages with new navigation
+   ========================================== */
+
+/* Main page container - used by all pages */
+.page-container,
+.dashboard-container,
+.employees-container,
+.projects-container,
+.attendance-container,
+.leaves-container,
+.performance-container,
+.departments-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: var(--spacing-xl);
+}
+
+/* Page header section */
+.page-header,
+.dashboard-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.welcome-section,
+.page-title-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.welcome-section h2,
+.page-title-section h1,
+.page-title-section h2 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.welcome-section p,
+.page-title-section p {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Section headers */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.section-title h3 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.section-title p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.section-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+/* Content sections */
+.content-section,
+.dashboard-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+/* Cards */
+.dashboard-card,
+.content-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.card-header h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .page-container,
+  .dashboard-container,
+  .employees-container,
+  .projects-container,
+  .attendance-container,
+  .leaves-container,
+  .performance-container,
+  .departments-container {
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container,
+  .dashboard-container,
+  .employees-container,
+  .projects-container,
+  .attendance-container,
+  .leaves-container,
+  .performance-container,
+  .departments-container {
+    padding: var(--spacing-md);
+  }
+
+  .welcome-section h2,
+  .page-title-section h1,
+  .page-title-section h2 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section-actions {
+    width: 100%;
+  }
+
+  .section-actions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container,
+  .dashboard-container,
+  .employees-container,
+  .projects-container,
+  .attendance-container,
+  .leaves-container,
+  .performance-container,
+  .departments-container {
+    padding: var(--spacing-sm);
+  }
+
+  .welcome-section h2,
+  .page-title-section h1,
+  .page-title-section h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .dashboard-card,
+  .content-card {
+    padding: var(--spacing-md);
+  }
+}

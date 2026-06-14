@@ -12,6 +12,7 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    designation: '',
     role: 'user'
   });
   const [errors, setErrors] = useState({});
@@ -105,6 +106,7 @@ const Register = () => {
       name: formData.name,
       email: formData.email,
       password: formData.password,
+      designation: formData.designation,
       role: formData.role
     });
     setIsSubmitting(false);
@@ -184,6 +186,27 @@ const Register = () => {
                   placeholder="Enter your email"
                 />
                 {errors.email && <span className="error-text">{errors.email}</span>}
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="designation">
+                  <div className="label-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                    </svg>
+                  </div>
+                  Designation
+                </label>
+                <input
+                  type="text"
+                  id="designation"
+                  name="designation"
+                  value={formData.designation}
+                  onChange={handleChange}
+                  className={errors.designation ? 'error' : ''}
+                  placeholder="e.g., Senior Developer, Sales Manager"
+                />
+                {errors.designation && <span className="error-text">{errors.designation}</span>}
               </div>
               
               <div className="form-group">

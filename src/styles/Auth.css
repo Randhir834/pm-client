@@ -354,16 +354,16 @@
 
 /* Main card with glassmorphism effect */
 .auth-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
+  background: transparent;
+  backdrop-filter: none;
   border-radius: var(--border-radius);
-  box-shadow: var(--shadow-heavy);
+  box-shadow: none;
   padding: 48px;
   width: 100%;
   max-width: none;
   position: relative;
   z-index: 2;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: none;
   animation: slideUp 0.6s ease-out;
 }
 
@@ -943,13 +943,35 @@
 /* Role Selection Styles */
 .form-group select {
   width: 100%;
-  padding: 12px 16px;
+  padding: 16px 20px;
+  padding-right: 45px; /* Extra space for dropdown arrow */
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   font-size: 16px;
   background: white;
   transition: all 0.3s ease;
   cursor: pointer;
+  line-height: 1.6;
+  height: 56px;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  appearance: none; /* Remove default browser styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 20px;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.form-group select option {
+  padding: 14px;
+  font-size: 16px;
+  line-height: 1.8;
+  min-height: 44px;
 }
 
 .form-group select:focus {

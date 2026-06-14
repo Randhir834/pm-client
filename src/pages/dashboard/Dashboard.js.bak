@@ -493,9 +493,6 @@ const Dashboard = () => {
         <div className="dashboard-header">
           <div className="welcome-section">
             <h2>Welcome back, {user && user.name}! 👋</h2>
-            {user && user.designation && (
-              <p className="user-designation-text">{user.designation}</p>
-            )}
             <p>Here's what's happening with your Innovatiq Media business today.</p>
           </div>
         </div>

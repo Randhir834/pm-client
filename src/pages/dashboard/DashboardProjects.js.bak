@@ -95,9 +95,6 @@ const DashboardProjects = () => {
         <div className="dashboard-header">
           <div className="welcome-section">
             <h2>Welcome back, {user && user.name}!</h2>
-            {user && user.designation && (
-              <p className="user-designation-text">{user.designation}</p>
-            )}
             <p>Here’s a quick snapshot of your projects.</p>
           </div>
         </div>
@@ -165,12 +162,102 @@ const DashboardProjects = () => {
                 </svg>
               </div>
               <div className="stat-content">
-                <h3>Pending</h3>
+                <h3>Outstanding</h3>
                 <p className="stat-number">{formatMoney(metrics.outstandingAmount)}</p>
                 <span className="stat-change positive">Remaining amount</span>
               </div>
             </div>
           )}
+
+          <div className="stat-card">
+            <div className="stat-icon" style={{ background: 'linear-gradient(135deg, #ff5858 0%, #f09819 100%)' }}>
+              <svg viewBox="0 0 24 24" fill="white">
+                <path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm5 11H7v-2h10z" />
+              </svg>
+            </div>
+            <div className="stat-content">
+              <h3>Overdue</h3>
+              <p className="stat-number">{metrics.overdueProjects}</p>
+              <span className="stat-change positive">Past deadline</span>
+            </div>
+          </div>
+
+          <div className="stat-card">
+            <div className="stat-icon" style={{ background: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)' }}>
+              <svg viewBox="0 0 24 24" fill="white">
+                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" />
+              </svg>
+            </div>
+            <div className="stat-content">
+              <h3>This Week</h3>
+              <p className="stat-number">{metrics.dueSoonProjects}</p>
+              <span className="stat-change positive">Deadline in 7 days</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="dashboard-section">
+          <div className="section-header">
+            <h3>Employee Management</h3>
+            <p>Quick access to employee management features</p>
+          </div>
+          
+          <div className="employee-management-grid">
+            <div className="management-card" onClick={() => navigate('/employees')}>
+              <div className="management-icon" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+                <svg viewBox="0 0 24 24" fill="white" width="32" height="32">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </div>
+              <h4>Employees</h4>
+              <p>Manage employee records and information</p>
+              <button className="btn-card">View Employees →</button>
+            </div>
+
+            <div className="management-card" onClick={() => navigate('/leaves')}>
+              <div className="management-icon" style={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}>
+                <svg viewBox="0 0 24 24" fill="white" width="32" height="32">
+                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
+                </svg>
+              </div>
+              <h4>Leaves</h4>
+              <p>Manage leave requests and approvals</p>
+              <button className="btn-card">View Leaves →</button>
+            </div>
+
+            <div className="management-card" onClick={() => navigate('/attendance')}>
+              <div className="management-icon" style={{ background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }}>
+                <svg viewBox="0 0 24 24" fill="white" width="32" height="32">
+                  <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+              </div>
+              <h4>Attendance</h4>
+              <p>Track employee attendance and work hours</p>
+              <button className="btn-card">View Attendance →</button>
+            </div>
+
+            <div className="management-card" onClick={() => navigate('/performance')}>
+              <div className="management-icon" style={{ background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' }}>
+                <svg viewBox="0 0 24 24" fill="white" width="32" height="32">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+              </div>
+              <h4>Performance</h4>
+              <p>Manage performance reviews and evaluations</p>
+              <button className="btn-card">View Performance →</button>
+            </div>
+
+            <div className="management-card" onClick={() => navigate('/employees/new')}>
+              <div className="management-icon" style={{ background: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)' }}>
+                <svg viewBox="0 0 24 24" fill="white" width="32" height="32">
+                  <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </div>
+              <h4>Add Employee</h4>
+              <p>Add a new employee to the system</p>
+              <button className="btn-card">Add New →</button>
+            </div>
+          </div>
         </div>
 
         <div className="dashboard-grid">

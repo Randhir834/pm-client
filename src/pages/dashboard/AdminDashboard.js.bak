@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import Layout from '../../components/layout/Layout';
 import { LoadingSpinner } from '../../components/ui';
 import { useCachedApi } from '../../hooks/useCachedApi';
@@ -10,7 +9,6 @@ import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [error, setError] = useState(null);
 
   const statsResult = useCachedApi('api/auth/stats', { ttlMs: 5 * 60_000 });
@@ -165,9 +163,6 @@ const AdminDashboard = () => {
         <div className="dashboard-header">
           <div className="welcome-section">
             <h2>Admin Dashboard</h2>
-            {user && user.designation && (
-              <p className="user-designation-text">{user.designation}</p>
-            )}
             <p>System overview and user management for Innovatiq Media</p>
           </div>
         </div>

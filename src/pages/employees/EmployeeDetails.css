@@ -1,0 +1,781 @@
+/* Employee Details Page */
+.employee-details-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: var(--spacing-xl);
+  min-height: calc(100vh - 70px);
+}
+
+/* Header */
+.details-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-back:hover {
+  background: var(--background-hover);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.btn-back svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Profile Card */
+.profile-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  margin-bottom: var(--spacing-xl);
+}
+
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.profile-avatar-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-medium);
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h1 {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.profile-email {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.profile-badges {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: capitalize;
+}
+
+.badge-admin {
+  background: var(--primary-lightest);
+  color: var(--primary-color);
+}
+
+.badge-user {
+  background: var(--info-light);
+  color: var(--info-color);
+}
+
+.badge-designer {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.badge-active {
+  background: var(--success-light);
+  color: var(--success-color);
+}
+
+.badge-inactive {
+  background: var(--error-light);
+  color: var(--error-color);
+}
+
+.profile-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* Edit Form */
+.edit-form {
+  border-top: 1px solid var(--border-light);
+  padding-top: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+  background: transparent;
+  padding: 0;
+  padding-top: var(--spacing-xl);
+  border-radius: 0;
+  border: none;
+  border-top: 1px solid var(--border-light);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+}
+
+/* Tabs */
+.tabs-container {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: var(--spacing-xl);
+  box-shadow: none;
+}
+
+.tabs {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.tab:hover {
+  color: var(--text-primary);
+  background: var(--background-hover);
+}
+
+.tab.active {
+  background: var(--accent-color);
+  color: var(--text-white);
+}
+
+/* Tab Content */
+.tab-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Overview Tab */
+.overview-tab {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.info-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  transition: var(--transition);
+  box-shadow: none;
+}
+
+.info-card:hover {
+  box-shadow: none;
+  border-color: transparent;
+  transform: none;
+}
+
+.info-card-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.info-card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.info-card-content {
+  flex: 1;
+}
+
+.info-card-content h3 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-card-content p {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  margin: 0;
+}
+
+/* Salary Tab */
+.salary-tab {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.salary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.salary-header h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.salary-form {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: var(--spacing-2xl);
+  box-shadow: none;
+}
+
+.salary-preview {
+  display: flex;
+  gap: var(--spacing-2xl);
+  padding: var(--spacing-xl);
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.preview-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.preview-item span {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.preview-item strong {
+  font-size: var(--font-size-xl);
+  color: var(--accent-color);
+  font-weight: var(--font-weight-bold);
+}
+
+.salaries-list {
+  margin-top: var(--spacing-2xl);
+}
+
+.salaries-list h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xl);
+}
+
+.salaries-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.salary-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  transition: var(--transition);
+  box-shadow: none;
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.salary-card:hover {
+  box-shadow: none;
+  border-color: var(--border-light);
+  transform: none;
+}
+
+.salary-card-header {
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.salary-card-header h4 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.salary-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.salary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  font-size: var(--font-size-sm);
+}
+
+.salary-row span:first-child {
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.salary-row span:last-child {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.salary-row.negative span:last-child {
+  color: var(--error-color);
+}
+
+.salary-row.total {
+  border-top: 2px solid var(--border-light);
+  padding-top: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.salary-row.total span,
+.salary-row.total strong {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+}
+
+.salary-row.highlight {
+  background: var(--accent-color);
+  color: var(--text-white);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-top: var(--spacing-sm);
+}
+
+.salary-row.highlight span,
+.salary-row.highlight strong {
+  color: var(--text-white);
+}
+
+/* Projects and Attendance Tabs */
+.projects-tab,
+.attendance-tab {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.projects-tab h2,
+.attendance-tab h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Projects Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+}
+
+.project-card {
+  background: var(--background-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.project-card:hover {
+  box-shadow: var(--shadow-medium);
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.project-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.project-title-section h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.project-id {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-weight: var(--font-weight-medium);
+  background: var(--background-secondary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+}
+
+.status-badge {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.status-in-design,
+.status-planned {
+  background: var(--info-light);
+  color: var(--info-color);
+}
+
+.status-concept-shared,
+.status-in-progress {
+  background: var(--warning-light);
+  color: var(--warning-color);
+}
+
+.status-under-correction,
+.status-on-hold {
+  background: var(--error-light);
+  color: var(--error-color);
+}
+
+.status-delivered,
+.status-completed {
+  background: var(--success-light);
+  color: var(--success-color);
+}
+
+.status-closed,
+.status-cancelled {
+  background: var(--background-tertiary);
+  color: var(--text-tertiary);
+}
+
+.status-client-pending {
+  background: var(--primary-lightest);
+  color: var(--primary-color);
+}
+
+.project-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  flex: 1;
+}
+
+.project-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+}
+
+.project-info-row .label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.project-info-row .value {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.project-description {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-light);
+}
+
+.project-description .label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-semibold);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.project-description p {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.project-files,
+.project-links {
+  margin-top: var(--spacing-sm);
+}
+
+.project-files .label,
+.project-links .label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-semibold);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.links-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.project-link {
+  font-size: var(--font-size-sm);
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.project-link:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+.project-card-footer {
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-light);
+  margin-top: auto;
+}
+
+.btn-view-project {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: var(--accent-color);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-view-project:hover {
+  background: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-small);
+}
+
+.no-data {
+  text-align: center;
+  padding: var(--spacing-4xl) var(--spacing-xl);
+  color: var(--text-tertiary);
+  font-size: var(--font-size-base);
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .info-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  
+  .salaries-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .employee-details-container {
+    padding: var(--spacing-md);
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .profile-avatar-large {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+
+  .profile-info h1 {
+    font-size: var(--font-size-3xl);
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .salaries-grid {
+    flex-direction: column;
+  }
+
+  .salary-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .salary-header button {
+    width: 100%;
+  }
+
+  .salary-preview {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tab {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-card,
+  .overview-tab,
+  .salary-tab,
+  .projects-tab,
+  .attendance-tab {
+    padding: 0;
+  }
+  
+  .edit-form,
+  .salary-form {
+    padding: var(--spacing-lg);
+  }
+
+  .profile-avatar-large {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+
+  .profile-info h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}

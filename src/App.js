@@ -19,6 +19,12 @@ const ProjectDetails = lazyWithPreload(() => import('./pages/projects/ProjectDet
 const EditProject = lazyWithPreload(() => import('./pages/projects/EditProject'));
 const Delivered = lazyWithPreload(() => import('./pages/projects/Delivered'));
 
+// Admin-only pages
+const Employees = lazyWithPreload(() => import('./pages/employees/Employees'));
+const EmployeeDetails = lazyWithPreload(() => import('./pages/employees/EmployeeDetails'));
+const Attendance = lazyWithPreload(() => import('./pages/attendance/Attendance'));
+const MyAttendance = lazyWithPreload(() => import('./pages/attendance/MyAttendance'));
+
 const RouteFallback = () => {
   return <div style={{ minHeight: 1 }} />;
 };
@@ -89,6 +95,38 @@ function App() {
                     <Delivered />
                   </ProtectedRoute>
                 }
+              />
+              <Route 
+                path="/employees" 
+                element={
+                  <ProtectedRoute adminOnly={true}>
+                    <Employees />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/employees/:id" 
+                element={
+                  <ProtectedRoute adminOnly={true}>
+                    <EmployeeDetails />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/attendance" 
+                element={
+                  <ProtectedRoute adminOnly={true}>
+                    <Attendance />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/my-attendance" 
+                element={
+                  <ProtectedRoute>
+                    <MyAttendance />
+                  </ProtectedRoute>
+                } 
               />
 
               <Route path="/" element={<Navigate to="/login" replace />} />
