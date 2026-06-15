@@ -537,6 +537,20 @@ const EmployeeDetails = () => {
                           <span className="value">{project.projectType}</span>
                         </div>
                         
+                        {project.price && (
+                          <div className="project-info-row">
+                            <span className="label">Price:</span>
+                            <span className="value">{formatCurrency(project.price)}</span>
+                          </div>
+                        )}
+                        
+                        {project.size && (
+                          <div className="project-info-row">
+                            <span className="label">Size:</span>
+                            <span className="value">{project.size}</span>
+                          </div>
+                        )}
+                        
                         <div className="project-info-row">
                           <span className="label">Start Date:</span>
                           <span className="value">
